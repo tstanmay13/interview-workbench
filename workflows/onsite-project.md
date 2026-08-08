@@ -148,9 +148,57 @@ map, evidence, decisions, critique history, and demo thread for all relevant rep
 - At the end, retain or delete the local notebook according to the company's policy;
   never push its interview-specific contents to the public workbench repository.
 
+## Notebook artifacts
+
+Maintain only these artifacts during the exercise:
+
+### `.workbench/notebook.md`
+
+The private working source of truth for the day. Keep entries terse and evidence-linked.
+It contains:
+
+- **Problem contract**: user, pain, desired outcome, success criteria, constraints,
+  non-goals, and open questions.
+- **Workspace map**: relevant repositories, their roles and run commands, interfaces
+  between them, the smallest relevant execution path, and a Mermaid diagram when useful.
+- **Current bet**: chosen slice, expected value, risk being tested, and stopping rule.
+- **Evidence ledger**: important claim, supporting observation/code/test/stakeholder
+  statement, confidence, and what would disconfirm it.
+- **Decision records**: context, viable options, choice, why, tradeoff, reversibility,
+  and review trigger.
+- **Experiment and critique log**: intention, success condition, result, strongest
+  counterevidence, learning, and next action.
+- **Parking lot**: deliberately deferred ideas and questions, not an unprioritized dump.
+
+Update the notebook at workflow transitions and meaningful evidence events. Do not log
+every prompt, command, or edit.
+
+### `.workbench/demo.md`
+
+The audience-facing narrative derived from verified notebook evidence. It contains:
+
+- one-sentence thesis;
+- problem, user, and success criteria;
+- live-demo path and deterministic fallback;
+- concise system map;
+- key decision and rejected alternative;
+- validation and failure-case matrix;
+- limitations and weakest remaining assumption;
+- improvements prioritized for another hour, day, and week;
+- likely questions and short, honest answers.
+
+Every material demo claim links back to a notebook heading, code location, test, or saved
+artifact. When the claim changes, update the source notebook first.
+
+### `.workbench/artifacts/`
+
+Store only evidence that materially supports the demo: screenshots, sanitized command
+output, small diagrams, or fallback recordings allowed by company policy. Do not copy
+source trees, secrets, customer data, or unnecessary logs. Prefer reproducible commands
+over captured output when reliability is equivalent.
+
 ## Unresolved choices
 
-- The minimum notebook artifacts worth maintaining under time pressure.
 - Collaboration/check-in cadence beyond the team's scheduled check-in.
 - Exact agent interaction protocol and understanding checks.
 - Demo artifact format and zero-dependency generation strategy.

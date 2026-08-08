@@ -65,3 +65,9 @@
   each repo and therefore cannot be committed from them.
 - Record each relevant repo and its role in a workspace map so cross-repo decisions can
   be explained as one system.
+- Keep interview-day documentation to two living files plus supporting artifacts:
+  `.workbench/notebook.md`, `.workbench/demo.md`, and `.workbench/artifacts/`.
+- `notebook.md` is the source of truth; `demo.md` may summarize it but must not introduce
+  claims that lack notebook evidence.
+- Favor Mermaid diagrams, decision tables, test matrices, and timelines over invented
+  metrics or decorative charts.
