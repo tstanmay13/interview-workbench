@@ -15,8 +15,10 @@
 ## Canonical terms
 
 - **Workbench**: the portable set of generic instructions and templates in this repo.
-- **Project notebook**: local, interview-only evidence captured while working. It must
-  not be pushed to this public repository.
+- **Workspace**: the common working directory containing one or more supplied project
+  repositories for the exercise.
+- **Project notebook**: the workspace-local `.workbench/` directory containing
+  interview-only evidence captured while working. It must not be committed or pushed.
 - **Understanding check**: Tanmay explains a fact or decision in his own words before
   relying on it.
 - **Evidence**: an observation, code reference, experiment, test result, or stakeholder
@@ -25,6 +27,8 @@
   a transcript of an agent conversation.
 - **Demo thread**: a continuous story from user/problem to decision to working result
   to remaining risk.
+- **Critique loop**: an evidence-based comparison between intent and result that ends
+  with a concrete adjustment, experiment, or consciously accepted limitation.
 
 ## Confirmed environment assumptions
 
@@ -33,6 +37,9 @@
 - Assume only a terminal, Git, the supplied project, and a preinstalled coding agent.
 - The core workflow must not depend on Claude Code, Codex, Cursor, or a specific model.
 - Optional conveniences must degrade cleanly when unavailable.
+- The exercise may span multiple repositories; the notebook and final narrative must
+  connect work across them without requiring duplicated notes.
+- Self-critique must happen throughout the work, not be reconstructed only for the demo.
 
 ## Existing personal setup
 
@@ -42,9 +49,19 @@
 
 ## Questions still being resolved
 
-- How much structure should be introduced into the provided project, if any?
 - Which artifacts provide enough evidence without becoming administrative overhead?
 - What cadence should trigger collaboration with the two engineers?
 - What exact final-demo format should the workbench prepare?
 - Which charts are useful and truthful for a single day of work?
 - What rehearsal project best approximates the onsite exercise?
+
+## Resolved design choices
+
+- Use one `.workbench/` notebook at the common workspace root, even when several repos
+  are involved.
+- If the workspace root is itself a Git repository, exclude `.workbench/` through the
+  local `.git/info/exclude`; do not modify the tracked `.gitignore` automatically.
+- If supplied repos are siblings beneath the workspace, the notebook remains outside
+  each repo and therefore cannot be committed from them.
+- Record each relevant repo and its role in a workspace map so cross-repo decisions can
+  be explained as one system.
