@@ -1,0 +1,4 @@
+.DS_Store
+*.local
+.workbench/
+project-notebook/
