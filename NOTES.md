@@ -81,3 +81,8 @@
   becoming process theater that prevents delivery.
 - Reversible, observable changes may proceed with a lightweight hypothesis and test.
   High-blast-radius or hard-to-reverse decisions require a deeper understanding gate.
+- Use subagents when two or more independent investigations can shorten the critical
+  path. Parallelism is a tool for evidence gathering and isolated work, not a substitute
+  for synthesis.
+- Tanmay remains the decision owner. Subagent conclusions are inputs that must be
+  reconciled against code, tests, and each other before driving a material decision.

@@ -180,6 +180,55 @@ Optimize for validated learning per minute, not prompts sent, lines changed, or 
 steps completed. Prefer one thin end-to-end slice early, then deepen it. Stop analysis
 when a cheap reversible experiment will produce stronger evidence.
 
+#### Subagent fan-out and fan-in
+
+Use parallel subagents only when their tasks are independent enough to reduce elapsed
+time after coordination and review overhead. Good early fan-out tasks include:
+
+- trace the relevant execution path in one repository;
+- discover how to run the narrowest tests and local environment;
+- inspect a separate repository or cross-repo interface;
+- identify existing patterns for the proposed change;
+- enumerate consequential failure cases or challenge a proposed approach.
+
+Do not delegate the same fuzzy question to many agents by default. Do not allow multiple
+agents to edit overlapping files. Do not delegate a two-minute lookup whose prompt and
+review would cost longer than doing it directly.
+
+Each assignment must specify:
+
+- the exact question or bounded outcome;
+- repository/path scope;
+- whether it is read-only or may edit;
+- evidence required;
+- time or stopping condition;
+- expected return format.
+
+Require a compact evidence packet from every subagent:
+
+1. conclusion in two or three sentences;
+2. exact code, documentation, command, or runtime evidence;
+3. uncertainties and contradictory evidence;
+4. recommended next experiment or decision;
+5. files changed and validation run, if edits were authorized.
+
+While subagents run, use the main thread for work that does not depend on their answers:
+clarify the problem contract, reproduce behavior, inspect the central path, or prepare a
+validation harness. Do not wait idly.
+
+At fan-in, compare conclusions, resolve contradictions, inspect the decisive evidence,
+and explain the resulting system model in my own words. Record only the synthesized
+learning in `notebook.md`; do not paste raw agent transcripts. If I cannot explain why a
+subagent's recommendation is correct, it is not ready to drive implementation.
+
+Good later fan-out tasks include isolated implementation in separate files or repos,
+independent test/failure analysis, and adversarial review of a completed slice. Keep one
+main agent or human owner responsible for integration, final diff review, and the demo
+narrative.
+
+If the supplied tool has no subagent capability, run the same bounded assignments
+sequentially with the primary agent. The workflow must still work, only more slowly.
+
 ### 5. Harden the story
 
 Before polishing, test the happy path and the most consequential failure paths. Separate
