@@ -132,6 +132,52 @@ and later close the loop with the resulting evidence. Credit the engineer's cont
 when it materially improved the result. The goal is normal high-trust teamwork, not
 performing for sponsorship.
 
+## Adaptive clock
+
+At the end of context setting, record the actual demo time and the moment hands-on work
+can begin. Do not pretend setup time is implementation time; recalculate after the first
+successful build, test, or runnable baseline.
+
+### Setup tax
+
+- Start with the repository's documented path and supplied environment.
+- After 15 minutes without a usable baseline, state the blocker and switch from blind
+  setup attempts to a focused diagnosis.
+- By roughly 25 minutes, ask an engineer if their context or a known command can unblock
+  the path. Bring the exact command, output, attempts, and current theory.
+- Do not spend the morning repairing unrelated infrastructure. Agree on a workaround or
+  narrower executable surface when possible.
+
+These are escalation prompts, not hard alarms. Continue when concrete evidence shows the
+next setup step is likely to succeed cheaply.
+
+### Progress anchors
+
+- Produce the first executable probe within roughly the first 20% of the usable work
+  window, or within 30 minutes of a working environment—whichever is sooner and realistic.
+- Aim for a thin end-to-end result by the midpoint of the usable work window.
+- Keep `demo.md` skeletal from the start so final preparation is synthesis, not a rewrite.
+- Preserve at least 30 minutes before the demo; use 45 minutes when the day permits.
+- Preserve the final 10–15 minutes for one timed rehearsal, environment cleanup, and a
+  calm handoff.
+
+### State-based scope decision
+
+Reassess when about 90 minutes remain, or earlier if progress materially changes:
+
+- **Green**: the central path works and has meaningful evidence. One isolated, high-value
+  extension may continue, but it must stop with at least 45 minutes remaining.
+- **Yellow**: the path is partial or weakly validated. Stop breadth and finish, test, and
+  simplify the central path.
+- **Red**: the core path is broken or the system model remains uncertain. Cut scope to the
+  smallest honest demonstration of working behavior or validated learning and align with
+  an engineer immediately.
+
+The reserve is not a ban on code. Correctness fixes, validation, and demo-critical
+stabilization may continue. Stop only new breadth whose failure could destabilize the
+result. If the team gives a different demo duration or explicitly prioritizes exploration
+over completion, adapt and record that choice.
+
 ### 4. Build through evidence loops
 
 For each increment:
@@ -387,6 +433,5 @@ over captured output when reliability is equivalent.
 
 ## Unresolved choices
 
-- Relative time budget and scope-freeze point.
 - Demo artifact format and zero-dependency generation strategy.
 - Rehearsal scenario and scoring rubric.

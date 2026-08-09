@@ -67,7 +67,6 @@
 
 ## Questions still being resolved
 
-- What relative time budget and scope-freeze point should protect the final demo?
 - Should the final demo remain Markdown-native or have an optional local HTML view?
 - What rehearsal project best approximates the onsite exercise?
 
@@ -102,3 +101,10 @@
   for synthesis.
 - Tanmay remains the decision owner. Subagent conclusions are inputs that must be
   reconciled against code, tests, and each other before driving a material decision.
+- Use an adaptive clock rather than fixed phase times. Setup cost, problem difficulty,
+  and the actual demo deadline determine the schedule.
+- Preserve a minimum 30-minute demo reserve, normally 45 minutes when the day permits.
+  Freeze breadth based on green/yellow/red solution state rather than an arbitrary early
+  cutoff; correctness work may continue into the reserve when necessary.
+- Surface setup blockers after 15 minutes and ask for help by roughly 25 minutes if no
+  concrete path is emerging. Fast collaboration is better than privately losing an hour.
