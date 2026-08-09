@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Casework review</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Operations workspace</p>
+      <h1>Casework review</h1>
+      <p>Evaluate a reimbursement request against the current service policy.</p>
+
+      <form id="case-form">
+        <label>Case ID <input name="caseId" value="CASE-101" required></label>
+        <label>Requested amount <input name="requestedAmount" value="2400" type="number" min="0" required></label>
+        <fieldset>
+          <legend>Evidence</legend>
+          <label><input type="checkbox" name="evidence" value="invoice" checked> Invoice</label>
+          <label><input type="checkbox" name="evidence" value="manager-approval" checked> Manager approval</label>
+        </fieldset>
+        <button type="submit">Evaluate case</button>
+      </form>
+
+      <section id="result" aria-live="polite" hidden></section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

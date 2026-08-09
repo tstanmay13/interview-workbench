@@ -1,6 +1,6 @@
 # Onsite Project Workflow
 
-Status: draft; unresolved choices are listed at the end.
+Status: implemented; revise after rehearsal evidence or new onsite context.
 
 ## Goal
 
@@ -452,4 +452,46 @@ over captured output when reliability is equivalent.
 
 ## Unresolved choices
 
-- Rehearsal scenario and scoring rubric.
+None. Revise this spec only when rehearsal evidence or new interview context invalidates
+an assumption.
+
+## Rehearsal specification
+
+Do not predict the exact onsite feature. Rehearse the invariant capabilities using a
+small fictional operations system with two repositories:
+
+- a case-processing service that turns inputs and rules into an outcome with evidence;
+- a reviewer surface that shows the outcome, supporting evidence, uncertainty, and a
+  human approval or exception path.
+
+The fixture should have incomplete but realistic documentation, an official setup path,
+one cross-repository contract, deterministic sample data, and an existing test seam. A
+facilitator brief introduces one bounded feature or defect plus representative, boundary,
+and dangerous-failure cases. The exercise must be solvable without external services or
+secrets and must not require insurance expertise.
+
+Provide three modes using the same fixture:
+
+- **90-minute drill**: framing, discovery fan-out, one tested vertical change, five-minute
+  demo, and self-critique.
+- **Three-hour rehearsal**: setup friction, cross-repo change, reviewer feedback, failure
+  handling, and a ten-minute demo.
+- **Full simulation**: context session, two chaperone check-ins, lunch-sized interruption,
+  adaptive scope decision, final demo, and structured debrief.
+
+Score observable behavior from 0–3 in six independent categories:
+
+1. **Outcome framing**: identifies the user, complete outcome, boundaries, and proof.
+2. **System understanding**: traces the relevant path and distinguishes fact, inference,
+   and unknown.
+3. **Agent leverage**: delegates separable work efficiently and performs disciplined
+   fan-in without surrendering decisions.
+4. **Verified delivery**: completes a coherent slice supported by representative,
+   boundary, and failure evidence.
+5. **Collaboration**: asks decision-changing questions, communicates useful checkpoints,
+   incorporates feedback, and is pleasant to work with.
+6. **Demo and critique**: tells an evidence-backed story, exposes limitations, and
+   prioritizes improvements without underselling the result.
+
+Scores are diagnostic, not an imitation of Pace's hiring rubric. After each rehearsal,
+record the two highest-leverage workflow changes and update the workbench before repeating.

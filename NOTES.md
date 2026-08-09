@@ -67,7 +67,7 @@
 
 ## Questions still being resolved
 
-- What rehearsal project best approximates the onsite exercise?
+- None. Revisit assumptions after the first rehearsal or new information from Pace.
 
 ## Resolved design choices
 
@@ -111,3 +111,7 @@
   local `demo.html` with no network or package dependency; never maintain it separately.
 - The HTML view must remain a calm evidence display, not a slide-design project. If it
   fails, present the complete Markdown version without losing content.
+- Because the exact role and project are unknown, rehearse against a role-agnostic,
+  multi-repository operations workflow rather than guessing a specialty.
+- The rehearsal includes a service, a small reviewer surface, representative/boundary/
+  failure cases, an intentionally incomplete brief, and an evidence-based scorecard.

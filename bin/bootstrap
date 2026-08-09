@@ -1,0 +1,68 @@
+#!/bin/sh
+
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+
+if [ "$#" -gt 1 ]; then
+  printf 'Usage: %s [workspace]\n' "$0" >&2
+  exit 2
+fi
+
+WORKSPACE_INPUT=${1:-.}
+if [ ! -d "$WORKSPACE_INPUT" ]; then
+  printf 'Workspace does not exist: %s\n' "$WORKSPACE_INPUT" >&2
+  exit 1
+fi
+
+WORKSPACE=$(CDPATH= cd -- "$WORKSPACE_INPUT" && pwd -P)
+WORKBENCH="$WORKSPACE/.workbench"
+
+mkdir -p "$WORKBENCH/artifacts" "$WORKBENCH/prompts"
+
+copy_if_missing() {
+  source_file=$1
+  target_file=$2
+  if [ -e "$target_file" ]; then
+    printf 'kept     %s\n' "$target_file"
+    return
+  fi
+  cp "$source_file" "$target_file"
+  printf 'created  %s\n' "$target_file"
+}
+
+copy_if_missing "$ROOT_DIR/core/OPERATING-BRIEF.md" "$WORKBENCH/OPERATING-BRIEF.md"
+copy_if_missing "$ROOT_DIR/templates/START-HERE.md" "$WORKBENCH/START-HERE.md"
+copy_if_missing "$ROOT_DIR/templates/notebook.md" "$WORKBENCH/notebook.md"
+copy_if_missing "$ROOT_DIR/templates/demo.md" "$WORKBENCH/demo.md"
+
+for prompt_file in "$ROOT_DIR"/prompts/*.md; do
+  copy_if_missing "$prompt_file" "$WORKBENCH/prompts/$(basename "$prompt_file")"
+done
+
+if git -C "$WORKSPACE" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  GIT_ROOT_RAW=$(git -C "$WORKSPACE" rev-parse --show-toplevel)
+  GIT_ROOT=$(CDPATH= cd -- "$GIT_ROOT_RAW" && pwd -P)
+  if [ "$WORKSPACE" = "$GIT_ROOT" ]; then
+    EXCLUDE_PATTERN='/.workbench/'
+  else
+    WORKSPACE_RELATIVE=${WORKSPACE#"$GIT_ROOT"/}
+    EXCLUDE_PATTERN="/$WORKSPACE_RELATIVE/.workbench/"
+  fi
+
+  EXCLUDE_FILE=$(git -C "$GIT_ROOT" rev-parse --git-path info/exclude)
+  case "$EXCLUDE_FILE" in
+    /*) ;;
+    *) EXCLUDE_FILE="$GIT_ROOT/$EXCLUDE_FILE" ;;
+  esac
+  mkdir -p "$(dirname "$EXCLUDE_FILE")"
+  touch "$EXCLUDE_FILE"
+  if ! grep -Fqx "$EXCLUDE_PATTERN" "$EXCLUDE_FILE"; then
+    printf '%s\n' "$EXCLUDE_PATTERN" >> "$EXCLUDE_FILE"
+    printf 'excluded %s through local Git info/exclude\n' "$WORKBENCH"
+  fi
+fi
+
+printf '\nWorkbench ready: %s\n' "$WORKBENCH"
+printf 'Next: open %s\n' "$WORKBENCH/START-HERE.md"

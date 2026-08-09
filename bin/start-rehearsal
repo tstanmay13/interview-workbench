@@ -1,0 +1,50 @@
+#!/bin/sh
+
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+ROOT_DIR=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+  printf 'Usage: %s {90|180|full} [target-directory]\n' "$0" >&2
+  exit 2
+fi
+
+MODE=$1
+case "$MODE" in
+  90|180|full) ;;
+  *)
+    printf 'Unknown rehearsal mode: %s (use 90, 180, or full)\n' "$MODE" >&2
+    exit 2
+    ;;
+esac
+
+TARGET_INPUT=${2:-"rehearsal-$MODE"}
+if [ -e "$TARGET_INPUT" ] && [ -n "$(ls -A "$TARGET_INPUT" 2>/dev/null)" ]; then
+  printf 'Target must be absent or empty: %s\n' "$TARGET_INPUT" >&2
+  exit 1
+fi
+
+mkdir -p "$TARGET_INPUT"
+TARGET=$(CDPATH= cd -- "$TARGET_INPUT" && pwd -P)
+cp -R "$ROOT_DIR/rehearsal/fixture/." "$TARGET/"
+
+"$ROOT_DIR/bin/bootstrap" "$TARGET" >/dev/null
+cp "$ROOT_DIR/rehearsal/challenges/$MODE.md" "$TARGET/.workbench/challenge.md"
+cp "$ROOT_DIR/rehearsal/schedules/$MODE.md" "$TARGET/.workbench/rehearsal.md"
+cp "$ROOT_DIR/templates/scorecard.md" "$TARGET/.workbench/scorecard.md"
+cp "$ROOT_DIR/prompts/chaperone.md" "$TARGET/.workbench/prompts/chaperone.md"
+
+for repository in "$TARGET/case-service" "$TARGET/review-console"; do
+  git -C "$repository" init -q
+  git -C "$repository" config user.name 'Rehearsal Baseline'
+  git -C "$repository" config user.email 'rehearsal@localhost'
+  git -C "$repository" add .
+  git -C "$repository" commit -q -m 'Start rehearsal fixture'
+done
+
+printf 'Rehearsal ready: %s\n' "$TARGET"
+printf 'Brief: %s/.workbench/challenge.md\n' "$TARGET"
+printf 'Start API:    cd %s/case-service && npm start\n' "$TARGET"
+printf 'Start UI:     cd %s/review-console && npm start\n' "$TARGET"
+printf 'Open guide:   %s/.workbench/START-HERE.md\n' "$TARGET"
