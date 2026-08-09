@@ -5,7 +5,7 @@ interview. It helps you move quickly **and** retain enough understanding to expl
 system, defend the solution, show evidence, and critique the work honestly.
 
 It is deliberately not an autonomous-agent harness. The useful machinery is a small
-set of Markdown files that any coding agent can read, two safe shell helpers, and a
+set of Markdown files that any coding agent can read, a few safe shell helpers, and a
 realistic two-repository rehearsal.
 
 ## The 60-second setup
@@ -74,12 +74,17 @@ keys to move between sections, `P` or the Print button to create a PDF, and the 
 rail to keep the narrative anchored on problem → decision → proof → limits. No external
 fonts, scripts, assets, accounts, or network access are required.
 
+Simple Mermaid left-to-right flows such as `Input --> Decision --> Outcome` become
+offline visual diagrams. More complex Mermaid remains readable as code so rendering can
+never block the presentation.
+
 If rendering costs time or the environment blocks scripts, present `demo.md` directly.
 The content matters more than the wrapper.
 
 ## Rehearse before the onsite
 
-Create a fresh two-repository exercise with a hidden brief and clean baseline commits:
+Create a fresh two-repository exercise with a generated facilitator brief and clean
+baseline commits:
 
 ```sh
 ./bin/start-rehearsal 90 /tmp/my-rehearsal

@@ -24,6 +24,15 @@
       </form>
 
       <section id="result" aria-live="polite" hidden></section>
+      <section id="disposition" hidden>
+        <h2>Reviewer disposition</h2>
+        <p>This decision needs an accountable human action.</p>
+        <div class="actions">
+          <button type="button" data-disposition="exception-approved">Approve exception</button>
+          <button type="button" data-disposition="escalated">Escalate case</button>
+        </div>
+        <p id="disposition-note" aria-live="polite"></p>
+      </section>
     </main>
     <script type="module" src="/app.js"></script>
   </body>

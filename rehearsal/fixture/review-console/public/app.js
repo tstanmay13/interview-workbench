@@ -1,5 +1,9 @@
+import { evaluateCase } from '/case-client.js';
+
 const form = document.querySelector('#case-form');
 const result = document.querySelector('#result');
+const disposition = document.querySelector('#disposition');
+const dispositionNote = document.querySelector('#disposition-note');
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -11,16 +15,11 @@ form.addEventListener('submit', async (event) => {
   };
 
   result.hidden = false;
+  disposition.hidden = true;
   result.textContent = 'Evaluating…';
 
   try {
-    const response = await fetch('http://127.0.0.1:4100/evaluate', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const body = await response.json();
-    if (!response.ok) throw new Error(body.error ?? 'Evaluation failed');
+    const body = await evaluateCase(payload);
     renderResult(body);
   } catch (error) {
     result.innerHTML = `<h2>Could not evaluate</h2><p>${escapeHtml(error.message)}</p>`;
@@ -28,14 +27,24 @@ form.addEventListener('submit', async (event) => {
 });
 
 function renderResult(body) {
+  const uncertainty = body.uncertainty ?? { level: 'unknown', reasons: ['No assessment returned.'] };
   result.innerHTML = `
     <p class="status">${escapeHtml(body.status)}</p>
     <h2>${escapeHtml(body.caseId)}</h2>
     <p>${escapeHtml(body.reason)}</p>
+    <h3>Uncertainty: ${escapeHtml(uncertainty.level)}</h3>
+    ${uncertainty.reasons.length ? `<ul>${uncertainty.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join('')}</ul>` : '<p>No unresolved policy checks.</p>'}
     <h3>Evidence trail</h3>
     <ul>${body.citations.map((citation) => `<li><code>${escapeHtml(citation)}</code></li>`).join('')}</ul>
   `;
+  disposition.hidden = body.status === 'auto-approved';
 }
+
+disposition.addEventListener('click', (event) => {
+  const action = event.target.closest('[data-disposition]');
+  if (!action) return;
+  dispositionNote.textContent = `Local rehearsal decision recorded: ${action.dataset.disposition}.`;
+});
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (character) => ({

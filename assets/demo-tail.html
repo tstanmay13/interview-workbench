@@ -14,21 +14,54 @@
 
       const inline = (value) => {
         let safe = escapeHtml(value);
-        safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
-        safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-        safe = safe.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-        safe = safe.replace(/_([^_]+)_/g, '<em>$1</em>');
+        const tokens = [];
+        const tokenFor = (html) => {
+          const token = `\u0000${tokens.length}\u0000`;
+          tokens.push(html);
+          return token;
+        };
+        const decorate = (text) => text
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+          .replace(/_([^_]+)_/g, '<em>$1</em>')
+          .replace(statusPattern, (status) =>
+            `<span class="status" data-status="${status.toLowerCase()}">${status}</span>`);
+
         safe = safe.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
-          const allowed = /^(https?:\/\/|#|\.\/|\.\.\/)/.test(url);
-          return allowed ? `<a href="${escapeHtml(url)}" rel="noreferrer">${label}</a>` : label;
+          const allowed = !/^[a-z][a-z0-9+.-]*:/i.test(url) || /^https?:\/\//i.test(url);
+          return allowed ? tokenFor(`<a href="${url}" rel="noreferrer">${decorate(label)}</a>`) : label;
         });
-        return safe.replace(statusPattern, (status) =>
-          `<span class="status" data-status="${status.toLowerCase()}">${status}</span>`);
+        safe = safe.replace(/`([^`]+)`/g, (_, codeValue) => tokenFor(`<code>${codeValue}</code>`));
+        safe = decorate(safe);
+        return safe.replace(/\u0000(\d+)\u0000/g, (_, index) => tokens[Number(index)]);
       };
 
       const slug = (value, index) => {
         const base = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
         return base || `section-${index}`;
+      };
+
+      const mermaidLabel = (token) => {
+        const clean = token.trim();
+        const shaped = clean.match(/^[a-zA-Z0-9_-]+(?:\[(.*?)\]|\((.*?)\)|\{(.*?)\})$/);
+        return (shaped ? shaped.slice(1).find(Boolean) : clean).replace(/^["']|["']$/g, '');
+      };
+      const renderMermaidFlow = (lines) => {
+        const paths = lines
+          .filter((line) => !/^\s*(flowchart|graph)\b/i.test(line) && !/^\s*%%/.test(line))
+          .map((line) => line.split(/\s*-->\s*/).map(mermaidLabel))
+          .filter((nodes) => nodes.length > 1);
+        if (!paths.length) return null;
+        const label = paths.flat().join(' then ');
+        const body = paths.map((nodes) => `<div class="flow-path">${nodes.map((node, index) => `${index ? '<span class="flow-arrow" aria-hidden="true">→</span>' : ''}<span class="flow-node">${inline(node)}</span>`).join('')}</div>`).join('');
+        return `<div class="flow-diagram" role="img" aria-label="${escapeHtml(label)}">${body}</div>`;
+      };
+      const renderCode = (language, lines) => {
+        if (language.toLowerCase() === 'mermaid') {
+          const diagram = renderMermaidFlow(lines);
+          if (diagram) return diagram;
+        }
+        return `<pre data-language="${escapeHtml(language)}"><code>${escapeHtml(lines.join('\n'))}</code></pre>`;
       };
 
       const isTableRow = (line) => /^\s*\|.*\|\s*$/.test(line);
@@ -62,7 +95,7 @@
         const line = lines[index];
         if (code) {
           if (/^```/.test(line)) {
-            target().push(`<pre data-language="${escapeHtml(code.language)}"><code>${escapeHtml(code.lines.join('\n'))}</code></pre>`);
+            target().push(renderCode(code.language, code.lines));
             code = null;
           } else code.lines.push(line);
           continue;
@@ -115,7 +148,7 @@
         paragraph.push(line.trim());
       }
       flush();
-      if (code) target().push(`<pre><code>${escapeHtml(code.lines.join('\n'))}</code></pre>`);
+      if (code) target().push(renderCode(code.language, code.lines));
 
       document.title = title;
       const hero = document.createElement('section');

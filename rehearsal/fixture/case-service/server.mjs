@@ -23,7 +23,7 @@ const server = createServer(async (request, response) => {
       sendJson(response, result.statusCode, result.ok ? result.value : { error: result.error });
     } catch (error) {
       const message = error instanceof SyntaxError ? 'request body must be valid JSON' : 'request failed';
-      sendJson(response, 400, { error: message });
+      sendJson(response, error.statusCode ?? 400, { error: message });
     }
     return;
   }
@@ -38,10 +38,18 @@ server.listen(port, '127.0.0.1', () => {
 function readBody(request) {
   return new Promise((resolve, reject) => {
     let body = '';
+    let exceededLimit = false;
     request.setEncoding('utf8');
     request.on('data', (chunk) => {
+      if (exceededLimit) return;
       body += chunk;
-      if (body.length > 1_000_000) reject(new Error('request too large'));
+      if (body.length > 1_000_000) {
+        exceededLimit = true;
+        body = '';
+        const error = new Error('request too large');
+        error.statusCode = 413;
+        reject(error);
+      }
     });
     request.on('end', () => resolve(body));
     request.on('error', reject);

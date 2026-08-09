@@ -24,6 +24,13 @@ if [ ! -d "$OUTPUT_DIR" ]; then
   exit 1
 fi
 
+SOURCE_PATH=$(CDPATH= cd -- "$(dirname "$SOURCE")" && printf '%s/%s\n' "$(pwd -P)" "$(basename "$SOURCE")")
+OUTPUT_PATH=$(CDPATH= cd -- "$OUTPUT_DIR" && printf '%s/%s\n' "$(pwd -P)" "$(basename "$OUTPUT")")
+if [ "$SOURCE_PATH" = "$OUTPUT_PATH" ] || { [ -e "$OUTPUT" ] && [ "$SOURCE" -ef "$OUTPUT" ]; }; then
+  printf 'Output must not be the Markdown source: %s\n' "$SOURCE" >&2
+  exit 1
+fi
+
 TEMP_OUTPUT=$(mktemp "$OUTPUT.tmp.XXXXXX")
 cleanup() { rm -f "$TEMP_OUTPUT"; }
 trap cleanup EXIT HUP INT TERM

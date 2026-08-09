@@ -23,6 +23,15 @@ export function evaluateCase(input) {
         ? 'Required evidence is present and the amount is within policy.'
         : explainReview(withinLimit, missingEvidence),
       citations: buildCitations(input, withinLimit),
+      uncertainty: {
+        level: autoApproved ? 'low' : withinLimit ? 'medium' : 'high',
+        reasons: autoApproved
+          ? []
+          : [
+              ...(!withinLimit ? ['amount exceeds automatic policy authority'] : []),
+              ...missingEvidence.map((kind) => `required evidence is missing: ${kind}`),
+            ],
+      },
     },
   };
 }

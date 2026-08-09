@@ -9,5 +9,6 @@ input { border: 1px solid #9baabb; border-radius: .35rem; font: inherit; padding
 fieldset { border: 1px solid #c9d5e2; display: flex; gap: 1rem; }
 fieldset label { display: flex; font-weight: 500; }
 button { background: #174f79; border: 0; border-radius: .35rem; color: white; cursor: pointer; font: inherit; font-weight: 750; padding: .8rem 1rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; }
 .status { color: #25636b; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
 code { overflow-wrap: anywhere; }

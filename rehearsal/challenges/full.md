@@ -15,3 +15,12 @@ that makes a case auditable without making the ordinary reviewer experience nois
 
 The work is intentionally larger than one sitting. Scope a coherent vertical slice,
 verify it, and leave a prioritized next-step plan.
+
+## Acceptance examples
+
+- **Representative case:** a complete request within the limit remains auto-approved,
+  and its ordered trace explains the checks without obscuring the reviewer outcome.
+- **Boundary case:** a request exactly at the policy limit produces a stable trace and
+  preserves compatibility for an existing caller.
+- **Dangerous failure case:** when the service returns an unknown policy check or cannot
+  be reached, the console does not imply approval and gives the reviewer a safe action.

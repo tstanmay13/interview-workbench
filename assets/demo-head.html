@@ -27,7 +27,7 @@
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: auto; }
     body {
       margin: 0;
       color: var(--ink);
@@ -235,6 +235,17 @@
       font: 12px/1.6 var(--mono);
     }
     pre code { padding: 0; color: inherit; background: transparent; }
+    .flow-diagram {
+      margin: 24px 0;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #f7fafb;
+    }
+    .flow-path { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .flow-path + .flow-path { margin-top: 14px; }
+    .flow-node { min-width: 112px; padding: 10px 14px; border: 1px solid #9bb4c6; border-radius: 6px; background: var(--surface); text-align: center; font-weight: 700; }
+    .flow-arrow { color: var(--teal); font: 700 22px var(--mono); }
     .table-wrap { overflow-x: auto; margin: 20px 0; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
@@ -251,6 +262,11 @@
       .hero { min-height: 270px; padding: 34px 26px; }
       .hero::after { display: none; }
       .section { padding: 26px 22px; }
+    }
+
+    @media (max-width: 520px) {
+      .actions #previous, .actions #next { display: none; }
+      .hero h1 { font-size: 38px; }
     }
 
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
