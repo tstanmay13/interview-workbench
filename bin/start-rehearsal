@@ -34,6 +34,9 @@ cp "$ROOT_DIR/rehearsal/challenges/$MODE.md" "$TARGET/.workbench/challenge.md"
 cp "$ROOT_DIR/rehearsal/schedules/$MODE.md" "$TARGET/.workbench/rehearsal.md"
 cp "$ROOT_DIR/templates/scorecard.md" "$TARGET/.workbench/scorecard.md"
 cp "$ROOT_DIR/prompts/chaperone.md" "$TARGET/.workbench/prompts/chaperone.md"
+if [ -f "$ROOT_DIR/rehearsal/facilitators/$MODE.md" ]; then
+  cp "$ROOT_DIR/rehearsal/facilitators/$MODE.md" "$TARGET/.workbench/facilitator.md"
+fi
 
 for repository in "$TARGET/case-service" "$TARGET/review-console"; do
   git -C "$repository" init -q

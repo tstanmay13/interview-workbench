@@ -30,6 +30,8 @@ review_status=$(git -C "$TARGET/review-console" status --porcelain)
 
 TARGET_180="$TEST_TMP/session-180"
 "$ROOT_DIR/bin/start-rehearsal" 180 "$TARGET_180" >/dev/null
+assert_file "$TARGET_180/.workbench/facilitator.md"
+assert_contains "$TARGET_180/.workbench/facilitator.md" 'PORT=4199'
 assert_contains "$TARGET_180/.workbench/rehearsal.md" 'setup friction'
 assert_contains "$TARGET_180/.workbench/rehearsal.md" 'reviewer feedback'
 assert_contains "$TARGET_180/.workbench/rehearsal.md" 'failure handling'

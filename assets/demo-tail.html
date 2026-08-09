@@ -1,17 +1,18 @@
   </textarea>
   <script>
-    (() => {
-      const source = document.querySelector('#source').value.replace(/^\n/, '');
-      const deck = document.querySelector('#deck');
-      const trace = document.querySelector('#trace');
+    const DemoParser = (() => {
       const statusPattern = /\b(PASS|PARTIAL|FAILED|UNVERIFIED|REJECTED)\b/g;
-
       const escapeHtml = (value) => value
         .replaceAll('&', '&amp;')
         .replaceAll('<', '&lt;')
         .replaceAll('>', '&gt;')
         .replaceAll('"', '&quot;');
-
+      const isSafeLink = (value) => {
+        const normalized = value.trim();
+        if (!normalized || /[\u0000-\u001f\u007f]/.test(normalized)) return false;
+        const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(normalized);
+        return !hasScheme || /^https?:\/\//i.test(normalized);
+      };
       const inline = (value) => {
         let safe = escapeHtml(value);
         const tokens = [];
@@ -28,8 +29,8 @@
             `<span class="status" data-status="${status.toLowerCase()}">${status}</span>`);
 
         safe = safe.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
-          const allowed = !/^[a-z][a-z0-9+.-]*:/i.test(url) || /^https?:\/\//i.test(url);
-          return allowed ? tokenFor(`<a href="${url}" rel="noreferrer">${decorate(label)}</a>`) : label;
+          const normalized = url.trim();
+          return isSafeLink(normalized) ? tokenFor(`<a href="${normalized}" rel="noreferrer">${decorate(label)}</a>`) : label;
         });
         safe = safe.replace(/`([^`]+)`/g, (_, codeValue) => tokenFor(`<code>${codeValue}</code>`));
         safe = decorate(safe);
@@ -47,15 +48,26 @@
         return (shaped ? shaped.slice(1).find(Boolean) : clean).replace(/^["']|["']$/g, '');
       };
       const renderMermaidFlow = (lines) => {
-        const paths = lines
-          .filter((line) => !/^\s*(flowchart|graph)\b/i.test(line) && !/^\s*%%/.test(line))
-          .map((line) => line.split(/\s*-->\s*/).map(mermaidLabel))
-          .filter((nodes) => nodes.length > 1);
+        const meaningful = lines.filter((line) => line.trim() && !/^\s*%%/.test(line));
+        if (/^\s*(flowchart|graph)\s+LR\s*$/i.test(meaningful[0] ?? '')) meaningful.shift();
+        const node = String.raw`[a-zA-Z][a-zA-Z0-9_-]*(?:\[[^\]\n]*\]|\([^\)\n]*\)|\{[^\}\n]*\})?`;
+        const chain = new RegExp(`^\\s*${node}(?:\\s*-->\\s*${node})+\\s*$`);
+        if (!meaningful.length || !meaningful.every((line) => chain.test(line))) return null;
+        const paths = meaningful.map((line) => line.split(/\s*-->\s*/).map(mermaidLabel));
         if (!paths.length) return null;
         const label = paths.flat().join(' then ');
         const body = paths.map((nodes) => `<div class="flow-path">${nodes.map((node, index) => `${index ? '<span class="flow-arrow" aria-hidden="true">→</span>' : ''}<span class="flow-node">${inline(node)}</span>`).join('')}</div>`).join('');
         return `<div class="flow-diagram" role="img" aria-label="${escapeHtml(label)}">${body}</div>`;
       };
+
+      return { escapeHtml, inline, renderMermaidFlow, slug };
+    })();
+
+    if (typeof document !== 'undefined') (() => {
+      const { escapeHtml, inline, renderMermaidFlow, slug } = DemoParser;
+      const source = document.querySelector('#source').value.replace(/^\n/, '');
+      const deck = document.querySelector('#deck');
+      const trace = document.querySelector('#trace');
       const renderCode = (language, lines) => {
         if (language.toLowerCase() === 'mermaid') {
           const diagram = renderMermaidFlow(lines);
