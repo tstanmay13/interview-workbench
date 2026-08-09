@@ -47,12 +47,28 @@
 - It is intentionally not the interview bootstrap: it installs many packages and apps,
   changes global configuration, starts a launch agent, and requires personal auth.
 
+## Research basis
+
+- The company is highly likely—but not proven from the email alone—to be Pace at
+  `withpace.com`, the AI operations platform for insurance. Confirm in the morning and
+  discard tailored assumptions if wrong. See `research/pace-context.md`.
+- Pace publicly describes AOPs, an orchestrator with focused subagents, shared task
+  sandboxes, minimized context, citations, graders, known-answer tests, and human review.
+  The workbench should reflect those principles only where they solve the actual task.
+- Controlled multi-agent evidence favors centralized coordination for parallelizable work
+  and warns that multi-agent systems can degrade sequential work or amplify errors. Start
+  with two workers and expand only when decomposition is genuinely clean. See
+  `research/efficient-agent-workflows.md`.
+- Evidence on AI developer productivity is mixed and setting-dependent. Perceived speed
+  is not proof of actual speed, so track verified progress per wall-clock minute.
+- `AGENTS.md` is the broadest instruction convention, but not universal. Keep a neutral
+  Markdown operating brief with optional adapters and an explicit loading fallback. See
+  `research/portable-agent-workbench.md`.
+
 ## Questions still being resolved
 
-- Which artifacts provide enough evidence without becoming administrative overhead?
-- What cadence should trigger collaboration with the two engineers?
-- What exact final-demo format should the workbench prepare?
-- Which charts are useful and truthful for a single day of work?
+- What relative time budget and scope-freeze point should protect the final demo?
+- Should the final demo remain Markdown-native or have an optional local HTML view?
 - What rehearsal project best approximates the onsite exercise?
 
 ## Resolved design choices

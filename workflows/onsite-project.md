@@ -14,6 +14,16 @@ that I am technically rigorous, coachable, clear, friendly, and effective to wor
 The context-setting session begins and the team provides the project repository,
 problem statement, constraints, and success criteria.
 
+## Research basis
+
+This workflow synthesizes first-party Pace materials, controlled and observational agent
+research, and official coding-agent documentation. See
+[`research/pace-context.md`](../research/pace-context.md),
+[`research/efficient-agent-workflows.md`](../research/efficient-agent-workflows.md), and
+[`research/portable-agent-workbench.md`](../research/portable-agent-workbench.md).
+Exact timeboxes and concurrency limits are interview-specific judgment calls, not proven
+constants. The morning context and the repository's own rules override this workflow.
+
 ## Inputs
 
 - The supplied project and its existing instructions.
@@ -38,6 +48,19 @@ Listen first. Capture the user, pain, desired outcome, explicit constraints, def
 of success, and what is out of scope. Restate the problem to the engineers in plain
 language and ask them to correct the restatement.
 
+Write a six-line task operating procedure:
+
+1. Trigger and inputs.
+2. End-to-end user or system outcome.
+3. Required steps or business rules.
+4. Constraints and authority boundaries.
+5. Exception, failure, or human-review path.
+6. Observable proof of completion.
+
+Ask for one representative case, one boundary or ugly case, and the most consequential
+way the system can be wrong. Do not assume that a successful happy-path response proves a
+probabilistic or agentic behavior is reliable.
+
 Agree on a collaboration contract rather than guessing how often the engineers want to
 be involved. Proposed wording:
 
@@ -60,11 +83,20 @@ where each claim can be verified. Do not create disconnected per-repository narr
 Output: a small system map containing entry point, data/control flow, change seam,
 validation boundary, and main risks.
 
+For multiple repositories, maintain a compact interface ledger: producer, contract,
+consumer, current evidence, proposed change, and integration order. Freeze any changed
+cross-repository contract in the main thread before delegating either side.
+
 ### 3. Choose a slice
 
 Generate at least two plausible approaches. Compare them by user value, uncertainty,
 implementation cost, reversibility, fit with the existing architecture, and ease of
 validation. Choose the smallest slice that tests the riskiest important assumption.
+
+Define three acceptance examples before substantial implementation when the behavior is
+clear enough: representative, boundary, and failure/review path. For probabilistic
+behavior, run the small case set repeatedly and report observed outcomes; never generalize
+from one cherry-picked run.
 
 Checkpoint: share a short decision brief at the scheduled check-in—or sooner if the
 choice changes scope or depends on product intent.
@@ -195,6 +227,19 @@ Do not delegate the same fuzzy question to many agents by default. Do not allow 
 agents to edit overlapping files. Do not delegate a two-minute lookup whose prompt and
 review would cost longer than doing it directly.
 
+Spawn only when all five answers are yes:
+
+1. **Independent now**: it does not depend on a main-thread decision still changing.
+2. **Bounded**: the goal, scope, and stopping condition fit in a short contract.
+3. **Non-conflicting**: it is read-only or owns isolated files, a worktree, or a repo.
+4. **Cheap to verify**: checking its output is cheaper than doing the entire task directly.
+5. **True concurrency**: useful main-thread work can continue while it runs.
+
+Start the first discovery wave with at most two subagents. Expand only if their scopes are
+cleanly independent and fan-in remains cheap. This cap is a conservative interview rule,
+not a universal optimum. Avoid nested delegation unless a bounded worker itself contains
+clearly independent searches and only its synthesized result will return.
+
 Each assignment must specify:
 
 - the exact question or bounded outcome;
@@ -206,11 +251,12 @@ Each assignment must specify:
 
 Require a compact evidence packet from every subagent:
 
-1. conclusion in two or three sentences;
-2. exact code, documentation, command, or runtime evidence;
-3. uncertainties and contradictory evidence;
-4. recommended next experiment or decision;
-5. files changed and validation run, if edits were authorized.
+1. status: complete, partial, or blocked;
+2. conclusion in one to three bullets;
+3. exact code, documentation, command, or runtime evidence;
+4. files changed and validation run, if edits were authorized;
+5. assumptions, uncertainty, and strongest counterexample;
+6. recommended next experiment or decision.
 
 While subagents run, use the main thread for work that does not depend on their answers:
 clarify the problem contract, reproduce behavior, inspect the central path, or prepare a
@@ -226,6 +272,11 @@ independent test/failure analysis, and adversarial review of a completed slice. 
 main agent or human owner responsible for integration, final diff review, and the demo
 narrative.
 
+Keep the central end-to-end slice in the main thread. That is where product judgment,
+shared context, and personal understanding are most valuable. A write-enabled worker is
+appropriate later for an isolated adapter, fixture, UI component, or separate repository
+only after its contract and validation target are stable.
+
 If the supplied tool has no subagent capability, run the same bounded assignments
 sequentially with the primary agent. The workflow must still work, only more slowly.
 
@@ -234,6 +285,11 @@ sequentially with the primary agent. The workflow must still work, only more slo
 Before polishing, test the happy path and the most consequential failure paths. Separate
 verified behavior from assumptions. Identify what the implementation does not handle,
 what I would improve next, and why the current stopping point is rational.
+
+Use one independent read-only reviewer after a coherent diff exists. Ask it to falsify
+correctness, security, maintainability, and test-coverage claims. Treat every finding as a
+hypothesis until code, runtime behavior, or a test confirms it; another model's agreement
+is not independent proof.
 
 Run a whole-solution critique before demo preparation:
 
@@ -331,6 +387,6 @@ over captured output when reliability is equivalent.
 
 ## Unresolved choices
 
-- Exact agent interaction protocol and understanding checks.
+- Relative time budget and scope-freeze point.
 - Demo artifact format and zero-dependency generation strategy.
 - Rehearsal scenario and scoring rubric.
