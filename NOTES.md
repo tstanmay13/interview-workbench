@@ -71,3 +71,9 @@
   claims that lack notebook evidence.
 - Favor Mermaid diagrams, decision tables, test matrices, and timelines over invented
   metrics or decorative charts.
+- Agree on a lightweight collaboration cadence with the engineers during context
+  setting instead of assuming when they want to be involved.
+- Use event-driven touchpoints: problem playback, slice alignment, the team's midpoint
+  check-in, and early escalation for product intent or high-cost decisions.
+- Earn advocacy through clear reasoning, responsiveness to feedback, useful updates,
+  and generous credit—not through performative networking.

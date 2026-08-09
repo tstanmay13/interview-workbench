@@ -38,6 +38,13 @@ Listen first. Capture the user, pain, desired outcome, explicit constraints, def
 of success, and what is out of scope. Restate the problem to the engineers in plain
 language and ask them to correct the restatement.
 
+Agree on a collaboration contract rather than guessing how often the engineers want to
+be involved. Proposed wording:
+
+> I'd like to play back my understanding before I build, show you the proposed slice
+> once I've mapped the relevant path, and bring you a rough result at the midpoint.
+> Does that cadence work, or would you prefer something different?
+
 Checkpoint: the engineers confirm or correct the problem framing before implementation.
 
 ### 2. Map the system
@@ -61,6 +68,37 @@ validation. Choose the smallest slice that tests the riskiest important assumpti
 
 Checkpoint: share a short decision brief at the scheduled check-in—or sooner if the
 choice changes scope or depends on product intent.
+
+## Collaboration protocol
+
+The agreed cadence overrides this default. Otherwise, collaborate at these events:
+
+1. **Problem playback**: confirm the user, outcome, success criteria, and boundaries.
+2. **Slice alignment**: share the system path, alternatives considered, current bet,
+   and riskiest assumption before substantial implementation.
+3. **Midpoint reality check**: show rough working behavior or concrete evidence, name
+   what failed, and ask whether the remaining priority still looks right.
+4. **Early escalation**: involve an engineer when blocked on product intent, unfamiliar
+   infrastructure, a costly or hard-to-reverse decision, or two failed attempts based
+   on the same theory.
+
+Do not interrupt for facts that can be cheaply verified in code, tests, or docs. Do not
+wait for a scheduled checkpoint when proceeding would create substantial rework.
+
+### Checkpoint brief
+
+Keep each update conversational and decision-ready:
+
+- **Goal**: what user or system outcome I am pursuing.
+- **Learned**: the most important evidence since the last conversation.
+- **Current bet**: what I am doing and why it is the smallest useful slice.
+- **Risk**: what I am least confident about or what failed.
+- **Ask**: one concrete correction, choice, or piece of context I need.
+
+After feedback, restate the important correction, record what it changes, incorporate it,
+and later close the loop with the resulting evidence. Credit the engineer's contribution
+when it materially improved the result. The goal is normal high-trust teamwork, not
+performing for sponsorship.
 
 ### 4. Build through evidence loops
 
@@ -199,7 +237,6 @@ over captured output when reliability is equivalent.
 
 ## Unresolved choices
 
-- Collaboration/check-in cadence beyond the team's scheduled check-in.
 - Exact agent interaction protocol and understanding checks.
 - Demo artifact format and zero-dependency generation strategy.
 - Rehearsal scenario and scoring rubric.
