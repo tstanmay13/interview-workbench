@@ -67,6 +67,7 @@ assert.doesNotMatch(parser.inline('[unsafe]( javascript:alert(1))'), /<a\b/);
 assert.doesNotMatch(parser.inline('[unsafe](java\tscript:alert(1))'), /<a\b/);
 assert.match(parser.renderMermaidFlow(['flowchart LR', 'Input --> Decision --> Outcome']), /class="flow-diagram"/);
 assert.equal(parser.renderMermaidFlow(['flowchart LR', 'A -->|approved| B']), null);
+assert.equal(parser.renderMermaidFlow(['flowchart LR', 'A[Before --> After] --> B[Done]']), null);
 
 class Element {
   constructor() {

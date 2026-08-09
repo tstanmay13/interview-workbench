@@ -52,6 +52,8 @@
         if (/^\s*(flowchart|graph)\s+LR\s*$/i.test(meaningful[0] ?? '')) meaningful.shift();
         const node = String.raw`[a-zA-Z][a-zA-Z0-9_-]*(?:\[[^\]\n]*\]|\([^\)\n]*\)|\{[^\}\n]*\})?`;
         const chain = new RegExp(`^\\s*${node}(?:\\s*-->\\s*${node})+\\s*$`);
+        const arrowInsideLabel = /(?:\[[^\]]*|\([^\)]*|\{[^\}]*)-->/;
+        if (meaningful.some((line) => arrowInsideLabel.test(line))) return null;
         if (!meaningful.length || !meaningful.every((line) => chain.test(line))) return null;
         const paths = meaningful.map((line) => line.split(/\s*-->\s*/).map(mermaidLabel));
         if (!paths.length) return null;
