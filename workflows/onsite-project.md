@@ -135,6 +135,51 @@ Escalate to an engineer when blocked by product intent, hidden system behavior, 
 expensive/reversible choice, or repeated failed experiments. Bring a brief: goal,
 observations, attempts, current theory, and the smallest question that unlocks progress.
 
+#### Risk-based understanding gate
+
+Do not require the same ceremony for every change. Classify the next move:
+
+**Fast path — reversible and observable**
+
+Examples include a narrow implementation behind existing interfaces, a focused test,
+instrumentation, or a small UI iteration with an easy rollback.
+
+Take at most 90 seconds to state:
+
+- intended outcome;
+- current hypothesis about the relevant path;
+- quickest meaningful validation;
+- known uncertainty.
+
+Then proceed. The agent may investigate, draft, or implement while I inspect the path and
+diff. I must understand the result before accepting the increment as evidence, committing
+it, or presenting it—not before the agent is allowed to type anything.
+
+**Deliberate path — consequential or poorly understood**
+
+Use the deeper gate for public API or schema changes, security and privacy behavior,
+destructive operations, cross-repository contracts, broad refactors, unfamiliar
+infrastructure, costly migrations, or a direction whose failure will consume substantial
+remaining time.
+
+Before committing to that direction, explain:
+
+- the user/system outcome and present behavior;
+- the execution path and evidence supporting that model;
+- viable alternatives and why this choice is preferable;
+- likely failure modes and rollback strategy;
+- the observable test that would disprove the approach.
+
+Ask an engineer when the unresolved part is product intent or organization-specific
+context. Use the agent to investigate technical unknowns. If a deep explanation is not
+needed to make the next reversible experiment safe, run the experiment and learn from it.
+
+**Throughput rule**
+
+Optimize for validated learning per minute, not prompts sent, lines changed, or process
+steps completed. Prefer one thin end-to-end slice early, then deepen it. Stop analysis
+when a cheap reversible experiment will produce stronger evidence.
+
 ### 5. Harden the story
 
 Before polishing, test the happy path and the most consequential failure paths. Separate

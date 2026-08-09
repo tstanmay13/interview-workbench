@@ -77,3 +77,7 @@
   check-in, and early escalation for product intent or high-cost decisions.
 - Earn advocacy through clear reasoning, responsiveness to feedback, useful updates,
   and generous credit—not through performative networking.
+- Understanding checks are risk-based and timeboxed. They must protect judgment without
+  becoming process theater that prevents delivery.
+- Reversible, observable changes may proceed with a lightweight hypothesis and test.
+  High-blast-radius or hard-to-reverse decisions require a deeper understanding gate.
