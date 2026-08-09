@@ -424,6 +424,25 @@ The audience-facing narrative derived from verified notebook evidence. It contai
 Every material demo claim links back to a notebook heading, code location, test, or saved
 artifact. When the claim changes, update the source notebook first.
 
+This Markdown file is the canonical and guaranteed presentation. It must remain complete
+and readable in a plain editor or terminal preview.
+
+### `.workbench/demo.html` (optional generated view)
+
+Generate this disposable view from `demo.md` only when a local browser is available and
+the rendering step is cheap. It must:
+
+- be one self-contained file with inline CSS and JavaScript;
+- require no CDN, package installation, build tool, network, or personal account;
+- preserve headings, lists, code, evidence tables, and source references;
+- use a restrained, high-contrast layout readable on a shared screen;
+- avoid animation, decorative dashboards, and unmeasured charts;
+- clearly label pass, partial, failed, and unverified claims without hiding any state.
+
+Do not edit the HTML by hand. Regenerate it after `demo.md` changes. If rendering, browser
+access, or layout fails, abandon the HTML immediately and present Markdown; no information
+or narrative should be lost.
+
 ### `.workbench/artifacts/`
 
 Store only evidence that materially supports the demo: screenshots, sanitized command
@@ -433,5 +452,4 @@ over captured output when reliability is equivalent.
 
 ## Unresolved choices
 
-- Demo artifact format and zero-dependency generation strategy.
 - Rehearsal scenario and scoring rubric.

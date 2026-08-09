@@ -67,7 +67,6 @@
 
 ## Questions still being resolved
 
-- Should the final demo remain Markdown-native or have an optional local HTML view?
 - What rehearsal project best approximates the onsite exercise?
 
 ## Resolved design choices
@@ -108,3 +107,7 @@
   cutoff; correctness work may continue into the reserve when necessary.
 - Surface setup blockers after 15 minutes and ask for help by roughly 25 minutes if no
   concrete path is emerging. Fast collaboration is better than privately losing an hour.
+- Keep `demo.md` as the only presentation source. Optionally generate a self-contained
+  local `demo.html` with no network or package dependency; never maintain it separately.
+- The HTML view must remain a calm evidence display, not a slide-design project. If it
+  fails, present the complete Markdown version without losing content.
