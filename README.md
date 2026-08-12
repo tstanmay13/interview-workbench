@@ -58,7 +58,9 @@ or repository source. When the target is inside a Git repository, it adds only a
 
 The full adaptive workflow is in
 [`workflows/onsite-project.md`](workflows/onsite-project.md). The one-page fallback is
-[`CHEATSHEET.md`](CHEATSHEET.md).
+[`CHEATSHEET.md`](CHEATSHEET.md). For a React/Express/Temporal/Postgres project with an
+LLM component, use the optional
+[`PRODUCT-AI-PRINCIPLES.md`](core/PRODUCT-AI-PRINCIPLES.md) decision reference.
 
 ## Make the final presentation
 
@@ -117,6 +119,7 @@ and controlled research in [`research/`](research/).
 ## Repository map
 
 - `core/OPERATING-BRIEF.md` — durable instructions for any coding agent.
+- `core/PRODUCT-AI-PRINCIPLES.md` — product-full-stack, Temporal, Postgres, and bounded-LLM decision reference.
 - `templates/` — notebook, demo, and rehearsal scorecard.
 - `prompts/` — optional phase cards; use only when they unlock the current phase.
 - `bin/` — safe bootstrap, offline demo renderer, and rehearsal launcher.

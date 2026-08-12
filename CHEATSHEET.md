@@ -10,6 +10,10 @@ Open `.workbench/START-HERE.md`. If scripts are blocked, copy `core/OPERATING-BR
 `templates/notebook.md`, and `templates/demo.md` into a local scratch directory and
 explicitly ask the agent to read them.
 
+If the supplied project uses React, Express, Temporal, Postgres, or an LLM, consult
+`.workbench/PRODUCT-AI-PRINCIPLES.md` only when making a relevant architectural decision.
+It is a reference, not a checklist or a reason to force those technologies into the path.
+
 ## First 30 minutes
 
 - Listen; identify user, pain, desired outcome, constraints, and demo time.
